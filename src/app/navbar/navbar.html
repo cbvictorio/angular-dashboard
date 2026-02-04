@@ -1,0 +1,11 @@
+<nav class="flex space-x-4 bg-gray-900 p-4">
+  @for (link of navLinks; track link.path) {
+    <a 
+      [routerLink]="link.path"
+      routerLinkActive="text-purple-400 border-b-2 border-purple-400"
+      [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+      class="text-gray-300 hover:text-purple-900 transition-colors px-3 py-2">
+      {{ link.label }}
+    </a>
+  }
+</nav>

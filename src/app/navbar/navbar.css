@@ -1,0 +1,5 @@
+@reference "../../styles.css"
+
+.link {
+    @apply text-purple-700 pointer font-bold;
+}
