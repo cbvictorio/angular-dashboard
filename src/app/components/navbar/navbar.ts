@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from "@angular/router";
-import { ThemeService } from '../services/theme';
+import { ThemeService } from '@/app/core/services/theme/theme';
 
 interface NavLink {
   path: string;
@@ -15,7 +15,7 @@ interface NavLink {
   styleUrl: './navbar.css',
 })
 
-export class Navbar implements OnInit {
+export class Navbar {
   
   themeService = inject(ThemeService);
   isDark = this.themeService.isDarkMode;
@@ -29,9 +29,4 @@ export class Navbar implements OnInit {
   onToggleClick() {
     this.themeService.toggleTheme();
   }
-
-  ngOnInit(): void {
-    console.log(`is dark mode enabled: ${this.isDark()}`)
-  }
-
 }

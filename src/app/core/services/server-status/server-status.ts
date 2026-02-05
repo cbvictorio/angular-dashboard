@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataService } from '../data';
+import { DataService } from '@/app/data';
 
 @Component({
   selector: 'app-server-status',

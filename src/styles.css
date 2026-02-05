@@ -26,6 +26,11 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+app-root {
+  display: block; /* Required for the height to take effect */
+  height: 100%;  /* Or 100% if the parents are set to 100% */
+}
+
 * {
   box-sizing: border-box;
 }
