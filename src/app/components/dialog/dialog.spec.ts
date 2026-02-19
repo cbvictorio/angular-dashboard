@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServerStatus } from '@/app/core/services/server-status/server-status';
+import { Dialog } from './dialog';
 
-describe('ServerStatus', () => {
-  let component: ServerStatus;
-  let fixture: ComponentFixture<ServerStatus>;
+describe('Dialog', () => {
+  let component: Dialog;
+  let fixture: ComponentFixture<Dialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ServerStatus]
+      imports: [Dialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ServerStatus);
+    fixture = TestBed.createComponent(Dialog);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

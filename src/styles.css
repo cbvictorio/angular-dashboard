@@ -8,14 +8,16 @@
 }
 
 :root {
-  color: #000;
+  color: var(--color-black);
   background-color: var(--color-medium-gray);
   color-scheme: light dark;
 }
 
-:root.dark {
-  color: #F8F9FA;
-  background-color: var(--color-black);
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: var(--color-light-gray);
+    background-color: var(--color-black);
+  }
 }
 
 body {
@@ -27,8 +29,20 @@ body {
 }
 
 app-root {
-  display: block; /* Required for the height to take effect */
-  height: 100%;  /* Or 100% if the parents are set to 100% */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+router-outlet + * {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+router-outlet {
+  display: none;
 }
 
 * {

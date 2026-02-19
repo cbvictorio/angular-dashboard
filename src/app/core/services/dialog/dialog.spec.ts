@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Theme } from '@/core/services/theme/theme';
+import { Dialog } from './dialog';
 
-describe('Theme', () => {
-  let service: Theme;
+describe('Dialog', () => {
+  let service: Dialog;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Theme);
+    service = TestBed.inject(Dialog);
   });
 
   it('should be created', () => {

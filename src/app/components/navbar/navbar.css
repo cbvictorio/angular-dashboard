@@ -4,9 +4,3 @@
 .link {
     @apply text-purple-700 pointer font-bold;
 }
-
-.navbar {
-    position: sticky;
-    top: 0;
-    width: 100%;
-}

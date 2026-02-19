@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from '@/app/components/navbar/navbar';
 
@@ -6,7 +6,8 @@ import { Navbar } from '@/app/components/navbar/navbar';
   selector: 'app-root',
   imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class App {
   protected readonly title = signal('angular-dashboard');
