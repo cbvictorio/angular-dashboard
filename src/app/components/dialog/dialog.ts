@@ -34,7 +34,7 @@ const Styles = {
         </section>
         <footer class="${Styles.footer}">
           <button class="outlined mr-2" app-button type="submit"> Cancel </button>
-          <button app-button> Accept </button>
+          <button app-button (click)="this.closeModal()"> Accept </button>
         </footer>
       </form>
     </dialog>
@@ -56,5 +56,10 @@ export class Dialog implements AfterViewInit {
     if (this.isOpened) {
       this.appModal.nativeElement.showModal()
     }
+  }
+
+  closeModal() {
+    this.appModal.nativeElement.close()
+    console.log('after click!')
   }
 }
