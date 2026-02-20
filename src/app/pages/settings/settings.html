@@ -1,1 +1,3 @@
-<p>settings works!</p>
+<app-dialog title="Are you sure?" #modal></app-dialog>
+<button app-button (click)="modal.openModal()"> Open Modal </button>
+<button app-button class="outlined mt-3"> Cancel </button>

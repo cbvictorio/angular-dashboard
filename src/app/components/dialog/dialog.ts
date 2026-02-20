@@ -1,26 +1,60 @@
-import { Component, Input, booleanAttribute } from '@angular/core';
+import { Button } from '@/app/components/button/button';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
-type DialogStatus = "open" | "closed"
+const Styles = {
+  body: `
+    min-w-100
+    rounded
+    bg-light-gray dark:bg-dark-gray 
+  `,
+  footer: `
+    mt-2 py-3 px-7 
+    bg-medium-gray/30 dark:bg-medium-gray/10
+    text-right
+  `
+};
 
 @Component({
   selector: 'app-dialog',
-  imports: [],
+  imports: [Button],
   styleUrl: './dialog.css',
   template: `
-    <dialog class="bg-black/80 top-0 left-0 w-full h-full flex flex-col items-center justify-center" [id]="id">
-      <h3> {{title}} </h3>
-      <p> {{text}} </p>
-      <button commandfor="my" command="close">Close</button>
+    <dialog #appModal class="app-modal bg-black/90">
+      <form method="dialog" class="${Styles.body}">
+        <section class="p-7">
+          @if (title) {
+            <header>
+              <h3 class="text-2xl/7 font-bold sm:truncate sm:text-3xl">{{ title }}</h3>
+            </header>
+          }
+          @if (text) {
+            <p class="text-shadow-md my-3">{{ text }}</p>
+          }
+          <ng-content></ng-content>
+        </section>
+        <footer class="${Styles.footer}">
+          <button class="outlined mr-2" app-button type="submit"> Cancel </button>
+          <button app-button> Accept </button>
+        </footer>
+      </form>
     </dialog>
   `,
 })
-export class Dialog {
-  @Input({ required: true }) id!: string;
-  @Input() title: string = 'Default Dialog Title!!';
-  @Input() text: string = 'Press ESC key or click the button below to close';
-  @Input({ transform: booleanAttribute }) isOpen: boolean = false;
+export class Dialog implements AfterViewInit {
 
-  showModal() {
-    alert('clicked!');
+  @Input() title: string = '';
+  @Input() text: string = '';
+  @Input() isOpened: boolean = false;
+  
+  @ViewChild('appModal') appModal!: ElementRef<HTMLDialogElement>;
+
+  openModal() {
+    this.appModal.nativeElement.showModal()
+  }
+
+  ngAfterViewInit() {
+    if (this.isOpened) {
+      this.appModal.nativeElement.showModal()
+    }
   }
 }

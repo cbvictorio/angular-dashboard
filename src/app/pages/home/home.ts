@@ -3,10 +3,11 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '@/app/core/services/user/user';
 import type { CredentialsDTO } from '@/app/core/services/user/user';
 import { Dialog } from '@/app/components/dialog/dialog';
+import { Button } from "@/app/components/button/button";
 
 @Component({
   selector: 'app-home',
-  imports: [ReactiveFormsModule, Dialog],
+  imports: [ReactiveFormsModule, Dialog, Button],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

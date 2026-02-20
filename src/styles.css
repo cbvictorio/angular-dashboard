@@ -39,6 +39,8 @@ router-outlet + * {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  align-items: flex-start;
+
 }
 
 router-outlet {
@@ -47,4 +49,8 @@ router-outlet {
 
 * {
   box-sizing: border-box;
+}
+
+.outlined {
+  @apply bg-transparent border-dark-gray dark:border-light-gray text-dark-gray font-bold dark:text-white;
 }
