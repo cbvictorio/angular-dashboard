@@ -8,4 +8,5 @@ import { Dialog } from '@/app/components/dialog/dialog';
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
+
 export class Settings {}

@@ -1,20 +1,21 @@
 import { Component, inject, HostListener } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { UserService } from '@/app/core/services/user/user';
-import type { CredentialsDTO } from '@/app/core/services/user/user';
-import { Dialog } from '@/app/components/dialog/dialog';
-import { Button } from "@/app/components/button/button";
+import { UserService } from '@/app/core/services/user/user-api.service';
+import type { CredentialsDTO } from '@/app/core/services/user/user-api.service';
+import { UserStore } from '@/app/core/stores/user/user.store';
+import type { UserProfile } from '@/app/core/models/user.model';
+import { ApiResponse, isApiError } from '@/app/core/models/api-response.model';
 
 @Component({
   selector: 'app-home',
-  imports: [ReactiveFormsModule, Dialog, Button],
+  imports: [ReactiveFormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
-  isOpen: boolean = false
+  userStore = inject(UserStore)
 
   public readonly formStyles = {
     wrapper: `
@@ -53,7 +54,16 @@ export class Home {
       const credentials = { email, password } as CredentialsDTO;
 
       this.userService.login(credentials).subscribe({
-        next: (res) => console.log('DATA REACHED COMPONENT:', res),
+        next: (res) => {
+          if (isApiError(res)) {
+            const { message } = res
+            console.error('Something went wrong while login into the app:')
+            return console.error(message)
+          }
+
+          this.userStore.setProfile(res)
+          console.log('Successfully logged in!')
+        },
         error: (err) => console.error('ERROR REACHED COMPONENT:', err),
         complete: () => console.log('STREAM COMPLETED'),
       });

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { UserStore } from '@/app/core/stores/user/user.store';
 
 interface NavLink {
   path: string;
@@ -22,21 +23,29 @@ const Styles = `
     class: Styles,
   },
   template: `
-    <div class="flex space-x-6">
-      @for (link of navLinks; track link.path) {
-        <a
-          [routerLink]="link.path"
-          routerLinkActive="border-b-2 border-purple-800 dark:border-purple-300"
-          [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-          class="font-bold hover:opacity-70 transition-opacity py-2"
-        >
-          {{ link.label }}
-        </a>
-      }
-    </div>
+    @if (userStore.isAuthenticated()) {
+      <div class="flex space-x-6">
+        @for (link of navLinks; track link.path) {
+          <a
+            [routerLink]="link.path"
+            routerLinkActive="border-b-2 border-purple-800 dark:border-purple-300"
+            [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+            class="font-bold hover:opacity-70 transition-opacity py-2"
+          >
+            {{ link.label }}
+          </a>
+        }
+      </div>
+      <div class="border ml-auto">
+        {{userStore.getName()}}
+      </div>
+    }
   `,
 })
 export class Navbar {
+
+  userStore = inject(UserStore)
+
   navLinks: NavLink[] = [
     { path: '/', label: 'Home' },
     { path: '/monitor', label: 'System Monitor' },
