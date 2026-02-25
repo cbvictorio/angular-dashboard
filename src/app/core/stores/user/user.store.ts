@@ -4,7 +4,6 @@ import type { UserProfile } from '@/app/core/models/user.model';
 @Injectable({ providedIn: 'root' })
 export class UserStore {
   profile = signal<UserProfile | null>(null);
-  readonly isAuthenticated = computed(() => this.profile() !== null);
 
   private requireProfile(): UserProfile {
     const profile = this.profile();

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserStore } from '@/app/core/stores/user/user.store';
+import { AuthService } from '@/app/core/services/user/auth.service';
 
 interface NavLink {
   path: string;
@@ -23,7 +24,7 @@ const Styles = `
     class: Styles,
   },
   template: `
-    @if (userStore.isAuthenticated()) {
+    @if (authService.isAuthenticated()) {
       <div class="flex space-x-6">
         @for (link of navLinks; track link.path) {
           <a
@@ -45,6 +46,7 @@ const Styles = `
 export class Navbar {
 
   userStore = inject(UserStore)
+  authService = inject(AuthService)
 
   navLinks: NavLink[] = [
     { path: '/', label: 'Home' },

@@ -6,7 +6,7 @@ import { UserStore } from '@/app/core/stores/user/user.store';
 import { isApiError } from '@/app/core/models/api-response.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Button } from '@/app/components/button/button';
-import { finalize, firstValueFrom, tap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -45,25 +45,20 @@ export class Login {
   async onSubmit(event: Event) {
     event.preventDefault();
     if (!this.loginForm.valid) return;
-
+    
     const credentials = this.loginForm.value as CredentialsDTO;
+
     this.loginForm.disable()
+    const response = await this.userService.login(credentials)
+    this.loginForm.enable()
 
-    try {
-      const res = await firstValueFrom(this.userService.login(credentials));
-
-      if (isApiError(res)) {
-        console.error('API Error:', res.message);
-        return;
-      }
-
-      this.userStore.setProfile(res);
-      this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl'] || '/');
-
-    } catch (err) {
-      console.error('Something went wrong: ', err);
-    } finally {
-      this.loginForm.enable()
+    // Validation: what we do on an error scenario
+    if (typeof response === "string") {
+      return
     }
+
+    this.userStore.setProfile(response);
+    this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl'] || '/');
+    localStorage.setItem('userProfile', JSON.stringify(response));
   }
 }
