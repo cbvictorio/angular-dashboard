@@ -48,7 +48,7 @@ export class Navbar {
   userStore = inject(UserStore)
   authService = inject(AuthService)
 
-  navLinks: NavLink[] = [
+  readonly navLinks: NavLink[] = [
     { path: '/', label: 'Home' },
     { path: '/monitor', label: 'System Monitor' },
     { path: '/settings', label: 'Settings' },
