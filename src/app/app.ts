@@ -1,6 +1,7 @@
-import { Component, signal, ViewEncapsulation } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { Navbar } from '@/app/components/navbar/navbar';
+import { UserStore } from './core/stores/user/user.store';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,12 @@ import { Navbar } from '@/app/components/navbar/navbar';
 })
 export class App {
   protected readonly title = signal('angular-dashboard');
+  userStore = inject(UserStore)
+  router = inject(Router)
+
+  handleLogout = () => {
+    this.userStore.setProfile(null)
+    localStorage.removeItem('userProfile');
+    this.router.navigate(['/login']);
+  }
 }

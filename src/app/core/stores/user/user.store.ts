@@ -8,7 +8,7 @@ export class UserStore {
   authService = inject(AuthService)
   profile = signal<UserProfile | null>(null);
 
-  setProfile(profile: UserProfile) {
+  setProfile(profile: UserProfile | null) {
     this.profile.set(profile);
   }
 
