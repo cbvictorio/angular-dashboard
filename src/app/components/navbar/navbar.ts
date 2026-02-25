@@ -1,20 +1,9 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  viewChild,
-} from '@angular/core';
+import { Component, ElementRef, Input, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { UserStore } from '@/app/core/stores/user/user.store';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Button } from '@/app/components/button/button';
-import { AuthService } from '@/app/core/services/user/auth.service';
-import { UserProfile } from '@/app/core/models/user.model';
 
-interface NavLink {
+export interface NavLink {
   path: string;
   label: string;
 }
@@ -27,18 +16,32 @@ const Styles = {
     bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-100
   `,
   navItem: 'block px-3 py-2 cursor-pointer text-inherit',
+  profileMenu: `
+    p-1
+    bg-light-gray dark:bg-dark-gray
+    border rounded shadow-xl
+    list-none text-center
+    absolute
+  `,
 };
 
 @Component({
   selector: '[app-navbar]',
   imports: [RouterLink, RouterLinkActive, CommonModule, Button],
-  host: {
-    class: Styles.wrapper,
-  },
+  host: { class: Styles.wrapper },
+  styles: `
+    ul {
+      position-anchor: --navbar-anchor;
+      top: calc(anchor(bottom) + 10px);
+      left: anchor(left);
+      right: anchor(right);
+      width: unset;
+    }
+  `,
   template: `
     @if (userName) {
       <div class="flex space-x-6">
-        @for (link of navLinks; track link.path) {
+        @for (link of links; track link.path) {
           <a
             [routerLink]="link.path"
             [routerLinkActiveOptions]="{ exact: link.path === '/' }"
@@ -55,25 +58,21 @@ const Styles = {
         popoverTarget="navbar-menu"
         style="anchor-name: --navbar-anchor;"
       >
-        Welcome {{ userName }}
+        <span class="font-bold px-2"> {{ userName }} </span>
       </app-button>
-      <ul
-        #navbarMenu
-        id="navbar-menu"
-        popover
-        class="bg-light-gray dark:bg-dark-gray border rounded-md p-1 list-none shadow-xl text-center"
-        style="
-          position-anchor: --navbar-anchor;
-          top: calc(anchor(bottom) + 10px);
-          left: anchor(left);
-          right: anchor(right);
-          width: unset;
-          position: absolute; 
-        "
-      >
-        <li><a routerLink="/settings" class="${Styles.navItem}" (click)="closeMenu()">Settings</a></li>
+      <ul #navbarMenu id="navbar-menu" popover class="${Styles.profileMenu}">
         <li>
-          <button (click)="logout()" type="button" class="cursor-pointer px-3 py-2 w-full">Logout</button>
+          <a routerLink="/settings" class="${Styles.navItem}" (click)="closeMenu()">Settings</a>
+        </li>
+        <li>
+          <button
+            size="md"
+            (click)="logout()"
+            type="button"
+            class="cursor-pointer px-3 py-2 w-full"
+          >
+            Logout
+          </button>
         </li>
       </ul>
     }
@@ -82,14 +81,9 @@ const Styles = {
 export class Navbar {
   @Input() userName: string | null = null;
   @Input({ required: true }) onLogout!: () => void;
+  @Input() links: NavLink[] = [];
 
   popoverMenu = viewChild<ElementRef>('navbarMenu');
-
-  readonly navLinks: NavLink[] = [
-    { path: '/', label: 'Home' },
-    { path: '/monitor', label: 'System Monitor' },
-    { path: '/settings', label: 'Settings' },
-  ];
 
   closeMenu() {
     const menuElement = this.popoverMenu()?.nativeElement;

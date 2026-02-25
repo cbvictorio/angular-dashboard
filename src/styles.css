@@ -11,6 +11,7 @@
   color: var(--color-black);
   background-color: var(--color-medium-gray);
   color-scheme: light dark;
+  font-family: Verdana, 'Lucida Sans', sans-serif
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,2 +1,86 @@
-<app-dialog title="Are you sure?" #modal></app-dialog>
-<button app-button (click)="modal.openModal()"> Open Modal </button>
+<div class="p-8 space-y-8">
+  <h2 class="text-2xl font-bold">Button Combinations</h2>
+
+  <!-- Filled Variants -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-semibold">Filled</h3>
+    
+    <h4 class="text-lg font-medium">Small</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="sm" variant="filled" color="purple">Purple</app-button>
+      <app-button size="sm" variant="filled" color="black">Black</app-button>
+      <app-button size="sm" variant="filled" color="gray">Gray</app-button>
+      <app-button size="sm" variant="filled" color="white">White</app-button>
+    </div>
+
+    <h4 class="text-lg font-medium">Medium</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="md" variant="filled" color="purple">Purple</app-button>
+      <app-button size="md" variant="filled" color="black">Black</app-button>
+      <app-button size="md" variant="filled" color="gray">Gray</app-button>
+      <app-button size="md" variant="filled" color="white">White</app-button>
+    </div>
+
+    <h4 class="text-lg font-medium">Large</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="lg" variant="filled" color="purple">Purple</app-button>
+      <app-button size="lg" variant="filled" color="black">Black</app-button>
+      <app-button size="lg" variant="filled" color="gray">Gray</app-button>
+      <app-button size="lg" variant="filled" color="white">White</app-button>
+    </div>
+
+    <h4 class="text-lg font-medium">Extra Large</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="xl" variant="filled" color="purple">Purple</app-button>
+      <app-button size="xl" variant="filled" color="black">Black</app-button>
+      <app-button size="xl" variant="filled" color="gray">Gray</app-button>
+      <app-button size="xl" variant="filled" color="white">White</app-button>
+    </div>
+  </div>
+
+  <!-- Outlined Variants -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-semibold">Outlined</h3>
+    
+    <h4 class="text-lg font-medium">Small</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="sm" variant="outlined" color="purple">Purple</app-button>
+      <app-button size="sm" variant="outlined" color="black">Black</app-button>
+      <app-button size="sm" variant="outlined" color="gray">Gray</app-button>
+      <app-button size="sm" variant="outlined" color="white">White</app-button>
+    </div>
+
+    <h4 class="text-lg font-medium">Medium</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="md" variant="outlined" color="purple">Purple</app-button>
+      <app-button size="md" variant="outlined" color="black">Black</app-button>
+      <app-button size="md" variant="outlined" color="gray">Gray</app-button>
+      <app-button size="md" variant="outlined" color="white">White</app-button>
+    </div>
+
+    <h4 class="text-lg font-medium">Large</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="lg" variant="outlined" color="purple">Purple</app-button>
+      <app-button size="lg" variant="outlined" color="black">Black</app-button>
+      <app-button size="lg" variant="outlined" color="gray">Gray</app-button>
+      <app-button size="lg" variant="outlined" color="white">White</app-button>
+    </div>
+
+    <h4 class="text-lg font-medium">Extra Large</h4>
+    <div class="grid grid-cols-4 gap-4">
+      <app-button size="xl" variant="outlined" color="purple">Purple</app-button>
+      <app-button size="xl" variant="outlined" color="black">Black</app-button>
+      <app-button size="xl" variant="outlined" color="gray">Gray</app-button>
+      <app-button size="xl" variant="outlined" color="white">White</app-button>
+    </div>
+  </div>
+
+  <!-- Button Types -->
+  <div class="space-y-4">
+    <h3 class="text-xl font-semibold">Button Types</h3>
+    <div class="grid grid-cols-2 gap-4">
+      <app-button type="button">Type Button</app-button>
+      <app-button type="submit">Type Submit</app-button>
+    </div>
+  </div>
+</div>

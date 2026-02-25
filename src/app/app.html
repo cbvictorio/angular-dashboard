@@ -1,4 +1,10 @@
-<nav app-navbar [userName]="userStore.getName()" [onLogout]="handleLogout"></nav>
+<nav 
+  app-navbar 
+  [userName]="userStore.getName()" 
+  [onLogout]="handleLogout"
+  [links]="navigationItems"
+>
+</nav>
 <main class="p-4 flex flex-col flex-1">
   <router-outlet />
 </main>
