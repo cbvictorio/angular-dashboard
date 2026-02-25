@@ -1,45 +1,10 @@
-import { Component, Input, computed } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { Icon, type IconName } from '@/app/components/icon/icon';
 
 export type IconLocation = 'left' | 'right';
 export type Size = 'sm' | 'md' | 'lg' | 'xl';
 export type Color = 'purple' | 'black' | 'gray' | 'white';
 export type Variant = 'filled' | 'outlined';
-
-const SizeStylesMap: Record<Size, string> = {
-  sm: 'px-2',
-  md: 'px-3',
-  lg: 'px-4',
-  xl: 'px-5',
-} as const;
-
-const ColorStylesMap: Record<Color, string> = {
-  purple: 'bg-purple-500 dark:bg-purple-500 text-white',
-  black: 'border-black bg-black dark:bg-dark-gray text-white',
-  gray: 'bg-dark-gray dark:bg-medium-gray text-white',
-  white: 'bg-white dark:text-black',
-};
-
-const OutlinedColorStylesMap: Record<Color, string> = {
-  purple: 'border-purple-500 text-purple-500',
-  black: 'border-black text-black dark:text-white dark:border-[black] border-3',
-  gray: 'border-gray-500 text-gray-500',
-  white: 'border-white text-white',
-} as const;
-
-const VariantStylesMap: Record<Variant, string> = {
-  filled: '',
-  outlined: 'bg-transparent border-2',
-} as const;
-
-const buttonClasses = `
-  py-2 px-5
-  relative rounded cursor-pointer
-  w-full flex items-center justify-center
-  disabled:opacity-70
-  disabled:cursor-not-allowed
-  disabled:pointer-events-none
-`;
 
 const loaderClasses = ` 
   h-4 w-4
@@ -58,124 +23,139 @@ const iconClasses = `absolute top-0 bottom-0 my-auto`;
   imports: [Icon],
   template: `
     <button
-      [class]="mergedClasses()"
-      [style.--arrow-color]="arrowColor()"
-      [attr.popovertarget]="popoverTarget"
-      [attr.anchor]="anchor"
-      [disabled]="disabled || isLoading"
+      [attr.popovertarget]="popoverTarget()"
+      [attr.anchor]="anchor()"
+      [disabled]="disabled() || isLoading()"
     >
-      @if (iconLocation == 'left' && icon) {
-        <app-icon class="${iconClasses} left-3" [name]="icon" />
+      @if (iconLocation() == 'left' && icon()) {
+        <app-icon class="${iconClasses} left-1" [name]="icon()!" />
       }
-      <ng-content />
-      @if (iconLocation == 'right' && icon) {
-        <app-icon class="${iconClasses} left-3" [name]="icon" />
+      <span> <ng-content /> </span>
+      @if (iconLocation() == 'right' && icon()) {
+        <app-icon class="${iconClasses} right-1" [name]="icon()!" />
       }
-      @if (isLoading) {
+      @if (isLoading()) {
         <div class="${loaderClasses} ${iconClasses}"></div>
       }
     </button>
   `,
   host: {
-    '[attr.type]': 'type',
-    '[attr.data-size]': 'size',
-    '[attr.data-has-popover]': 'popoverTarget || anchor',
+    '[attr.type]': 'type()',
+    '[attr.data-size]': 'size()',
+    '[attr.data-color]': 'color()',
+    '[attr.data-variant]': 'variant()',
+    '[attr.data-has-popover]': 'popoverTarget() || anchor()',
+    '[attr.data-has-icon]': 'icon()',
+    '[attr.class]': 'className()',
   },
   styles: [
     `
-      :host[data-size='sm'] {
-        font-size: 0.875rem;
-        --ng-icon__size: 0.875rem;
-      }
-      :host[data-size='md'],
-      :host:not([data-size]) {
-        font-size: 1.05rem;
-        --ng-icon__size: 1.05rem;
-      }
-      :host[data-size='lg'] {
-        min-height: 3rem;
-        font-size: 1.25rem;
-        --ng-icon__size: 1.1rem;
-      }
-      :host[data-size='xl'] {
-        min-height: 3.125rem;
-        font-size: 1.5rem;
-        --ng-icon__size: 1.2rem;
+      @reference "../../../styles.css";
+
+      /* Base styles on <button> tag */
+      button {
+        @apply 
+          w-full py-2 text-sm shadow-md
+          block relative cursor-pointer 
+          flex items-center justify-center 
+          disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none
+          transition-all active:scale-95 active:shadow-inner hover:shadow-lg
+        ;
       }
 
-      :host[data-has-popover] button::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: calc(100% - 20px);
-        margin-block: auto;
-        width: 0;
-        height: 0;
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        border-top: 5px solid var(--arrow-color, currentColor);
+      /* Sizes */
+      :host[data-size='sm'] button {
+        @apply py-1.5 text-xs px-2;
       }
+      
+      :host[data-size='md'] button,:host(:not([data-size])) {
+        @apply text-sm px-3;
+      }
+
+      :host[data-size='lg'] button {
+        @apply py-2.5 text-base px-5;
+      }
+
+      :host([data-size='xl']) button {
+        @apply py-3 text-lg px-7;
+      }
+
+      /* Colors */
+      :host([data-color='purple']),:host(:not([data-color])) {
+        @apply bg-purple-500 dark:bg-purple-500 text-white border-purple-500;
+      }
+      
+      :host([data-color='black']) {
+        @apply border-black bg-dark-gray dark:bg-black text-white border-black;
+      }
+      
+      :host([data-color='gray']) {
+        @apply bg-medium-gray dark:bg-medium-gray text-light-gray border-medium-gray;
+      }
+      
+      :host([data-color='white']) {
+        @apply bg-white dark:text-black;
+      }
+      
+      /* outlined variant */
+      :host([data-variant='outlined']) {
+        @apply bg-transparent border-2 text-inherit border-3 font-bold;
+      }
+      
+      :host([data-variant='outlined']:is([data-color='purple'], :not([data-color]))) {
+        --arrow-color: #9333ea;
+      }
+      
+      :host([data-variant='outlined'][data-color='black']) {
+        --arrow-color: #000000;
+      }
+      
+      :host([data-variant='outlined'][data-color='gray']) {
+        --arrow-color: #6b7280;
+      }
+      
+      :host([data-variant='outlined'][data-color='white']) {
+        --arrow-color: #ffffff;
+      }
+
+      /* Icon conditional styles */
+      :host([icon]) button  {
+        span {
+          @apply px-3;
+        }
+      }
+
+      /* Anchor menu styles */
+      :host[data-has-popover] button {
+        padding-right: 30px;
+        &:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: calc(100% - 20px);
+          margin-block: auto;
+          width: 0;
+          height: 0;
+          border-left: 4px solid transparent;
+          border-right: 4px solid transparent;
+          border-top: 5px solid var(--arrow-color, currentColor);
+        }
+        }
     `,
   ],
 })
 export class Button {
-  @Input()
-  type: 'button' | 'submit' = 'button';
-
-  @Input()
-  color: Color = 'purple';
-
-  @Input()
-  variant: Variant = 'filled';
-
-  @Input()
-  size: Size = 'md';
-
-  @Input()
-  iconLocation: IconLocation = 'left';
-
-  @Input()
-  icon: IconName | null = null;
-
-  @Input({ alias: 'class' })
-  className: string = '';
-
-  @Input()
-  isLoading = false;
-
-  @Input()
-  popoverTarget: string | null = null;
-
-  @Input()
-  anchor: string | null = null;
-
-  @Input()
-  anchorName: string | null = null;
-
-  @Input()
-  disabled: boolean = false;
-
-  protected mergedClasses = computed(() => {
-    const extended = this.className;
-    const sizeStyles = SizeStylesMap[this.size];
-    const colorStyles =
-      this.variant === 'outlined' ? OutlinedColorStylesMap[this.color] : ColorStylesMap[this.color];
-    const variantStyles = VariantStylesMap[this.variant];
-    return `${buttonClasses} ${sizeStyles} ${colorStyles} ${variantStyles} ${extended}`.trim();
-  });
-
-  protected arrowColor = computed(() => {
-    if (this.variant === 'filled') {
-      return 'white';
-    }
-    
-    const outlinedColors: Record<Color, string> = {
-      purple: '#9333ea',
-      black: '#000000',
-      gray: '#6b7280',
-      white: '#ffffff',
-    };
-    return outlinedColors[this.color];
-  });
+  readonly className = input<string>('');
+  readonly type = input<'button' | 'submit'>('button');
+  readonly color = input<Color>('purple');
+  readonly variant = input<Variant>('filled');
+  readonly size = input<Size>('md');
+  readonly iconLocation = input<IconLocation>('left');
+  readonly icon = input<IconName | null>(null);
+  readonly isLoading = input(false);
+  readonly popoverTarget = input<string | null>(null);
+  readonly anchor = input<string | null>(null);
+  readonly anchorName = input<string | null>(null);
+  readonly disabled = input(false);
 }

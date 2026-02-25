@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, viewChild } from '@angular/core';
+import { Component, ElementRef, input, Input, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Button } from '@/app/components/button/button';
@@ -39,9 +39,9 @@ const Styles = {
     }
   `,
   template: `
-    @if (userName) {
+    @if (userName()) {
       <div class="flex space-x-6">
-        @for (link of links; track link.path) {
+        @for (link of links(); track link.path) {
           <a
             [routerLink]="link.path"
             [routerLinkActiveOptions]="{ exact: link.path === '/' }"
@@ -54,11 +54,11 @@ const Styles = {
       </div>
       <app-button
         size="sm"
-        class="ml-auto"
         popoverTarget="navbar-menu"
         style="anchor-name: --navbar-anchor;"
+        className="ml-auto rounded py-1.5"
       >
-        <span class="font-bold px-2"> {{ userName }} </span>
+        <span class="font-bold px-2"> {{ userName() }} </span>
       </app-button>
       <ul #navbarMenu id="navbar-menu" popover class="${Styles.profileMenu}">
         <li>
@@ -79,9 +79,9 @@ const Styles = {
   `,
 })
 export class Navbar {
-  @Input() userName: string | null = null;
-  @Input({ required: true }) onLogout!: () => void;
-  @Input() links: NavLink[] = [];
+  userName = input<string | null>(null);
+  onLogout = input<() => void>(() => {});
+  links = input<NavLink[]>([]);
 
   popoverMenu = viewChild<ElementRef>('navbarMenu');
 
@@ -94,6 +94,10 @@ export class Navbar {
   }
 
   logout() {
-    this.onLogout();
+    const onLogoutCallback = this.onLogout()
+    
+    if (onLogoutCallback) {
+      onLogoutCallback()
+    }
   }
 }
